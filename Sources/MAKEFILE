@@ -1,0 +1,15 @@
+
+CC = gcc
+CFLAGS = -O2 -Wall
+OBJS = gcmtest.o gcm.o aes.o
+
+gcmtest: $(OBJS)
+
+test: gcmtest gcm_test_vectors.bin
+	./gcmtest
+
+gcm_test_vectors.bin:
+	cp gcm_test_vectors/gcm_test_vectors.bin .
+
+clean:
+	rm -f gcmtest *.o gcm_test_vectors.bin
