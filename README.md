@@ -6,5 +6,10 @@ Due to steps by integrating some crypto standards I found no compatible open sou
 
 I created my own wrapper as reusable pod/header here.
 
+# Implementation
+Based on public domain implementation from Steve Gibson of GRC.com.
+
+See [Sources/README.txt](https://github.com/mko-x/SharedAES-GCM/blob/master/Sources/README.txt) for more info.
+
 # License
 Released to Public Domain by Markus Kosmal
