@@ -65,7 +65,8 @@ int gcm_initialize( void );
  ******************************************************************************/
 int gcm_setkey( gcm_context *ctx,   // caller-provided context ptr
                 const uchar *key,   // pointer to cipher key
-                const uint keysize  // must be 128, 192 or 256
+                const uint keysize  // size in bytes (must be 16, 24, 32 for
+		                    // 128, 192 or 256-bit keys respectively)
 ); // returns 0 for success
 
 
@@ -88,7 +89,7 @@ int gcm_setkey( gcm_context *ctx,   // caller-provided context ptr
  ******************************************************************************/
 int gcm_crypt_and_tag(
         gcm_context *ctx,       // gcm context with key already setup
-        int mode,               // cipher direction: GCM_ENCRYPT or GCM_DECRYPT
+        int mode,               // cipher direction: ENCRYPT (1) or DECRYPT (0)
         const uchar *iv,        // pointer to the 12-byte initialization vector
         size_t iv_len,          // byte length if the IV. should always be 12
         const uchar *add,       // pointer to the non-ciphered additional data
@@ -134,7 +135,7 @@ int gcm_auth_decrypt(
  *
  ******************************************************************************/
 int gcm_start( gcm_context *ctx,    // pointer to user-provided GCM context
-               int mode,            // GCM_ENCRYPT or GCM_DECRYPT
+               int mode,            // ENCRYPT (1) or DECRYPT (0)
                const uchar *iv,     // pointer to initialization vector
                size_t iv_len,       // IV length in bytes (should == 12)
                const uchar *add,    // pointer to additional AEAD data (NULL if none)

@@ -173,7 +173,8 @@ static void gcm_mult( gcm_context *ctx,     // pointer to established context
  ******************************************************************************/
 int gcm_setkey( gcm_context *ctx,   // pointer to caller-provided gcm context
                 const uchar *key,   // pointer to the AES encryption key
-                const uint keysize) // must be 128, 192 or 256
+                const uint keysize) // size in bytes (must be 16, 24, 32 for
+		                    // 128, 192 or 256-bit keys respectively)
 {
     int ret, i, j;
     uint64_t hi, lo;
