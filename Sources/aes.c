@@ -147,6 +147,8 @@ void aes_init_keygen_tables( void )
     int pow[256];
     int log[256];
 
+    if (aes_tables_inited) return;
+
     // fill the 'pow' and 'log' tables over GF(2^8)
     for( i = 0, x = 1; i < 256; i++ )   {
         pow[i] = x;
@@ -281,6 +283,9 @@ int aes_set_encryption_key( aes_context *ctx,
                 RK[15] = RK[7] ^ RK[14];
             }
             break;
+
+	default:
+	    return -1;
     }
     return( 0 );
 }
@@ -348,7 +353,7 @@ int aes_setkey( aes_context *ctx,   // AES context provided by our caller
     // system-specific mutexes and init the AES key generation tables on
     // demand, or ask the developer to simply call "gcm_initialize" once during
     // application startup before threading begins. That's what we choose.
-    if( !aes_tables_inited ) return ( 0 );  // fail the call when not inited.
+    if( !aes_tables_inited ) return ( -1 );  // fail the call when not inited.
     
     ctx->mode = mode;       // capture the key type we're creating
     ctx->rk = ctx->buf;     // initialize our round key pointer
@@ -358,6 +363,7 @@ int aes_setkey( aes_context *ctx,   // AES context provided by our caller
         case 16: ctx->rounds = 10; break;   // 16-byte, 128-bit key
         case 24: ctx->rounds = 12; break;   // 24-byte, 192-bit key
         case 32: ctx->rounds = 14; break;   // 32-byte, 256-bit key
+	default: return(-1);
     }
 
 #if AES_DECRYPTION

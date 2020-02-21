@@ -66,7 +66,8 @@ typedef struct {
 int aes_setkey( aes_context *ctx,       // pointer to context
                 int mode,               // 1 or 0 for Encrypt/Decrypt
                 const uchar *key,       // AES input key
-                uint keysize );         // 128, 192 or 256 bits
+                uint keysize );         // size in bytes (must be 16, 24, 32 for
+		                        // 128, 192 or 256-bit keys respectively)
                                         // returns 0 for success
 
 /******************************************************************************
