@@ -11,5 +11,7 @@ Based on public domain implementation from Steve Gibson of GRC.com.
 
 See [Sources/README.txt](https://github.com/mko-x/SharedAES-GCM/blob/master/Sources/README.txt) for more info.
 
+Thanks for fixes by [@maximmasiutin](https://github.com/maximmasiutin).
+
 # License
 Released to Public Domain by Markus Kosmal
