@@ -338,14 +338,31 @@ int gcm_update( gcm_context *ctx,       // pointer to user-provided GCM context
             return( ret );
 
         // encrypt or decrypt the input to the output
-        for( i = 0; i < use_len; i++ ) {
-            // XOR the cipher's ouptut vector (ectr) with our input
-            output[i] = (uchar) ( ectr[i] ^ input[i] );
-            // now we mix in our data into the authentication hash.
-            // if we're ENcrypting we XOR in the post-XOR (output) results,
-            // but if we're DEcrypting we XOR in the input data
-            if( ctx->mode == ENCRYPT )  ctx->buf[i] ^= output[i];
-            else                        ctx->buf[i] ^= input[i];
+        if( ctx->mode == ENCRYPT )  
+        {
+             for( i = 0; i < use_len; i++ ) {
+                // XOR the cipher's ouptut vector (ectr) with our input
+                output[i] = (uchar) ( ectr[i] ^ input[i] );
+                // now we mix in our data into the authentication hash.
+                // if we're ENcrypting we XOR in the post-XOR (output) 
+                // results, but if we're DEcrypting we XOR in the input 
+                // data
+                ctx->buf[i] ^= output[i];
+            }
+        }
+            else                        
+        {
+            for( i = 0; i < use_len; i++ ) {
+                // but if we're DEcrypting we XOR in the input data first, 
+                // i.e. before saving to ouput data, otherwise if the input 
+                // and output buffer are the same (inplace decryption) we 
+                // would not get the correct auth tag
+
+       	        ctx->buf[i] ^= input[i];
+
+                // XOR the cipher's ouptut vector (ectr) with our input
+                output[i] = (uchar) ( ectr[i] ^ input[i] );
+             }
         }
         gcm_mult( ctx, ctx->buf, ctx->buf );    // perform a GHASH operation
 
